@@ -4,14 +4,15 @@ import tinyapi
 
 username = os.getenv("TinyUrlUsername")
 password  = os.getenv("TinyUrlPassword")
-rssEndpoint = os.getenv("RssFeedEndpoint")
 
 session = tinyapi.Session(username, password)
 
-def send_updates():
-    draft = session.create_draft()
-    draft.subject = "Testing tiny api"
-    draft.body = "Content should be here"
-    draft.save()
+def send_updates(latest_posts):
+    for post in latest_posts:
+        draft = session.create_draft()
+        draft.subject = post.title
+        draft.body = post.link
+        draft.body += post['content'].pop(0).value
+        draft.save()
 
-    draft.send_preview()
+        draft.send_preview()
