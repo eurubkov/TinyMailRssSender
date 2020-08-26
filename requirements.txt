@@ -1,3 +1,4 @@
 azure-functions
 tinyapi
 feedparser
+azure-storage-blob

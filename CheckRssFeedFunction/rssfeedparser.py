@@ -5,9 +5,8 @@ from datetime import timedelta
 
 rssEndpoint = os.getenv("RssFeedEndpoint")
 
-def get_latest_posts():
+def get_latest_posts(now):
     result = []
-    now = datetime.utcnow()
     feed = feedparser.parse(rssEndpoint)
 
     for entry in feed.entries:
