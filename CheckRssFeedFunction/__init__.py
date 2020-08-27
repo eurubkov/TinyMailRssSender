@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 import logging
 import azure.functions as func
 from . import tinyurl as tinyurl_service
@@ -16,6 +17,10 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
 
     now = datetime.datetime.utcnow()
-    latest_posts = rssfeedparser.get_latest_posts(now)
+    last_checked = storageservice.get_checkpoint_datetime()
+    if last_checked == None:
+        last_checked = datetime.utcnow + timedelta(hours=-1)
+    latest_posts = rssfeedparser.get_latest_posts(now, last_checked)
     tinyurl_service.send_updates(latest_posts)
     storageservice.create_or_update_blob(now)
+    
