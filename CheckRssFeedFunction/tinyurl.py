@@ -15,4 +15,4 @@ def send_updates(latest_posts):
         draft.body += post['content'].pop(0).value
         draft.save()
 
-        draft.send_preview()
+        draft.send()
